@@ -19,8 +19,8 @@ package org.springframework.ejb.access;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.rmi.RemoteException;
-import javax.ejb.EJBHome;
-import javax.ejb.EJBObject;
+//import javax.ejb.EJBHome;
+//import javax.ejb.EJBObject;
 import javax.naming.NamingException;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -77,11 +77,11 @@ public abstract class AbstractRemoteSlsbInvokerInterceptor extends AbstractSlsbI
 		if (this.homeAsComponent) {
 			return null;
 		}
-		if (!(home instanceof EJBHome)) {
-			// An EJB3 Session Bean...
-			this.homeAsComponent = true;
-			return null;
-		}
+//		if (!(home instanceof EJBHome)) {
+//			// An EJB3 Session Bean...
+//			this.homeAsComponent = true;
+//			return null;
+//		}
 		return super.getCreateMethod(home);
 	}
 
@@ -198,15 +198,15 @@ public abstract class AbstractRemoteSlsbInvokerInterceptor extends AbstractSlsbI
 	 * @param ejb the EJB instance to remove
 	 * @see javax.ejb.EJBObject#remove
 	 */
-	protected void removeSessionBeanInstance(@Nullable EJBObject ejb) {
-		if (ejb != null && !this.homeAsComponent) {
-			try {
-				ejb.remove();
-			}
-			catch (Throwable ex) {
-				logger.warn("Could not invoke 'remove' on remote EJB proxy", ex);
-			}
-		}
-	}
+//	protected void removeSessionBeanInstance(@Nullable EJBObject ejb) {
+//		if (ejb != null && !this.homeAsComponent) {
+//			try {
+//				ejb.remove();
+//			}
+//			catch (Throwable ex) {
+//				logger.warn("Could not invoke 'remove' on remote EJB proxy", ex);
+//			}
+//		}
+//	}
 
 }

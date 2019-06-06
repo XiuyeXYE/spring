@@ -23,8 +23,8 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import javax.enterprise.concurrent.LastExecution;
-import javax.enterprise.concurrent.ManagedScheduledExecutorService;
+//import javax.enterprise.concurrent.LastExecution;
+//import javax.enterprise.concurrent.ManagedScheduledExecutorService;
 
 import org.springframework.core.task.TaskRejectedException;
 import org.springframework.lang.Nullable;
@@ -172,10 +172,11 @@ public class ConcurrentTaskScheduler extends ConcurrentTaskExecutor implements T
 	@Nullable
 	public ScheduledFuture<?> schedule(Runnable task, Trigger trigger) {
 		try {
-			if (this.enterpriseConcurrentScheduler) {
-				return new EnterpriseConcurrentTriggerScheduler().schedule(decorateTask(task, true), trigger);
-			}
-			else {
+//			if (this.enterpriseConcurrentScheduler) {
+//				return new EnterpriseConcurrentTriggerScheduler().schedule(decorateTask(task, true), trigger);
+//			}
+//			else 
+			{
 				ErrorHandler errorHandler =
 						(this.errorHandler != null ? this.errorHandler : TaskUtils.getDefaultErrorHandler(true));
 				return new ReschedulingRunnable(task, trigger, this.scheduledExecutor, errorHandler).schedule();
@@ -241,9 +242,9 @@ public class ConcurrentTaskScheduler extends ConcurrentTaskExecutor implements T
 
 	private Runnable decorateTask(Runnable task, boolean isRepeatingTask) {
 		Runnable result = TaskUtils.decorateTaskWithErrorHandler(task, this.errorHandler, isRepeatingTask);
-		if (this.enterpriseConcurrentScheduler) {
-			result = ManagedTaskBuilder.buildManagedTask(result, task.toString());
-		}
+//		if (this.enterpriseConcurrentScheduler) {
+//			result = ManagedTaskBuilder.buildManagedTask(result, task.toString());
+//		}
 		return result;
 	}
 
@@ -252,24 +253,24 @@ public class ConcurrentTaskScheduler extends ConcurrentTaskExecutor implements T
 	 * Delegate that adapts a Spring Trigger to a JSR-236 Trigger.
 	 * Separated into an inner class in order to avoid a hard dependency on the JSR-236 API.
 	 */
-	private class EnterpriseConcurrentTriggerScheduler {
-
-		public ScheduledFuture<?> schedule(Runnable task, final Trigger trigger) {
-			ManagedScheduledExecutorService executor = (ManagedScheduledExecutorService) scheduledExecutor;
-			return executor.schedule(task, new javax.enterprise.concurrent.Trigger() {
-				@Override
-				@Nullable
-				public Date getNextRunTime(@Nullable LastExecution le, Date taskScheduledTime) {
-					return (trigger.nextExecutionTime(le != null ?
-							new SimpleTriggerContext(le.getScheduledStart(), le.getRunStart(), le.getRunEnd()) :
-							new SimpleTriggerContext()));
-				}
-				@Override
-				public boolean skipRun(LastExecution lastExecution, Date scheduledRunTime) {
-					return false;
-				}
-			});
-		}
-	}
+//	private class EnterpriseConcurrentTriggerScheduler {
+//
+//		public ScheduledFuture<?> schedule(Runnable task, final Trigger trigger) {
+//			ManagedScheduledExecutorService executor = (ManagedScheduledExecutorService) scheduledExecutor;
+//			return executor.schedule(task, new javax.enterprise.concurrent.Trigger() {
+//				@Override
+//				@Nullable
+//				public Date getNextRunTime(@Nullable LastExecution le, Date taskScheduledTime) {
+//					return (trigger.nextExecutionTime(le != null ?
+//							new SimpleTriggerContext(le.getScheduledStart(), le.getRunStart(), le.getRunEnd()) :
+//							new SimpleTriggerContext()));
+//				}
+//				@Override
+//				public boolean skipRun(LastExecution lastExecution, Date scheduledRunTime) {
+//					return false;
+//				}
+//			});
+//		}
+//	}
 
 }

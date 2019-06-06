@@ -44,9 +44,9 @@ public class ProxyCachingConfiguration extends AbstractCachingConfiguration {
 	public BeanFactoryCacheOperationSourceAdvisor cacheAdvisor() {
 		BeanFactoryCacheOperationSourceAdvisor advisor = new BeanFactoryCacheOperationSourceAdvisor();
 		advisor.setCacheOperationSource(cacheOperationSource());
-		advisor.setAdvice(cacheInterceptor());
+//		advisor.setAdvice(cacheInterceptor());
 		if (this.enableCaching != null) {
-			advisor.setOrder(this.enableCaching.<Integer>getNumber("order"));
+//			advisor.setOrder(this.enableCaching.<Integer>getNumber("order"));
 		}
 		return advisor;
 	}

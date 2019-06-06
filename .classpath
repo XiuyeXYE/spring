@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="lib/spring-core-5.1.7.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/aspectjweaver-1.9.4.jar"/>
 	<classpathentry kind="lib" path="lib/snakeyaml-1.23.jar"/>
+	<classpathentry kind="lib" path="lib/validation-api-2.0.1.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

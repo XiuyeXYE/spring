@@ -18,8 +18,8 @@ package org.springframework.ejb.access;
 
 import java.lang.reflect.InvocationTargetException;
 import java.rmi.RemoteException;
-import javax.ejb.CreateException;
-import javax.ejb.EJBObject;
+//import javax.ejb.CreateException;
+//import javax.ejb.EJBObject;
 import javax.naming.NamingException;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -110,16 +110,16 @@ public class SimpleRemoteSlsbInvokerInterceptor extends AbstractRemoteSlsbInvoke
 				throw RmiClientInterceptorUtils.convertRmiAccessException(
 					invocation.getMethod(), rex, isConnectFailure(rex), getJndiName());
 			}
-			else if (targetEx instanceof CreateException) {
-				throw RmiClientInterceptorUtils.convertRmiAccessException(
-					invocation.getMethod(), targetEx, "Could not create remote EJB [" + getJndiName() + "]");
-			}
+//			else if (targetEx instanceof CreateException) {
+//				throw RmiClientInterceptorUtils.convertRmiAccessException(
+//					invocation.getMethod(), targetEx, "Could not create remote EJB [" + getJndiName() + "]");
+//			}
 			throw targetEx;
 		}
 		finally {
-			if (ejb instanceof EJBObject) {
-				releaseSessionBeanInstance((EJBObject) ejb);
-			}
+//			if (ejb instanceof EJBObject) {
+//				releaseSessionBeanInstance((EJBObject) ejb);
+//			}
 		}
 	}
 
@@ -151,11 +151,11 @@ public class SimpleRemoteSlsbInvokerInterceptor extends AbstractRemoteSlsbInvoke
 	 * @param ejb the EJB component instance to release
 	 * @see #removeSessionBeanInstance
 	 */
-	protected void releaseSessionBeanInstance(EJBObject ejb) {
-		if (!this.cacheSessionBean) {
-			removeSessionBeanInstance(ejb);
-		}
-	}
+//	protected void releaseSessionBeanInstance(EJBObject ejb) {
+//		if (!this.cacheSessionBean) {
+//			removeSessionBeanInstance(ejb);
+//		}
+//	}
 
 	/**
 	 * Reset the cached session bean instance, if necessary.
@@ -177,9 +177,9 @@ public class SimpleRemoteSlsbInvokerInterceptor extends AbstractRemoteSlsbInvoke
 	public void destroy() {
 		if (this.cacheSessionBean) {
 			synchronized (this.beanInstanceMonitor) {
-				if (this.beanInstance instanceof EJBObject) {
-					removeSessionBeanInstance((EJBObject) this.beanInstance);
-				}
+//				if (this.beanInstance instanceof EJBObject) {
+//					removeSessionBeanInstance((EJBObject) this.beanInstance);
+//				}
 			}
 		}
 	}

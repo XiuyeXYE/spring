@@ -39,7 +39,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceClient;
@@ -369,12 +368,12 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 					}
 					currElements.add(new WebServiceRefElement(field, field, null));
 				}
-				else if (ejbRefClass != null && field.isAnnotationPresent(ejbRefClass)) {
-					if (Modifier.isStatic(field.getModifiers())) {
-						throw new IllegalStateException("@EJB annotation is not supported on static fields");
-					}
-					currElements.add(new EjbRefElement(field, field, null));
-				}
+//				else if (ejbRefClass != null && field.isAnnotationPresent(ejbRefClass)) {
+//					if (Modifier.isStatic(field.getModifiers())) {
+//						throw new IllegalStateException("@EJB annotation is not supported on static fields");
+//					}
+//					currElements.add(new EjbRefElement(field, field, null));
+//				}
 				else if (field.isAnnotationPresent(Resource.class)) {
 					if (Modifier.isStatic(field.getModifiers())) {
 						throw new IllegalStateException("@Resource annotation is not supported on static fields");
@@ -409,7 +408,7 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 							throw new IllegalStateException("@EJB annotation requires a single-arg method: " + method);
 						}
 						PropertyDescriptor pd = BeanUtils.findPropertyForMethod(bridgedMethod, clazz);
-						currElements.add(new EjbRefElement(method, bridgedMethod, pd));
+//						currElements.add(new EjbRefElement(method, bridgedMethod, pd));
 					}
 					else if (bridgedMethod.isAnnotationPresent(Resource.class)) {
 						if (Modifier.isStatic(method.getModifiers())) {
@@ -727,56 +726,56 @@ public class CommonAnnotationBeanPostProcessor extends InitDestroyAnnotationBean
 	 * Class representing injection information about an annotated field
 	 * or setter method, supporting the @EJB annotation.
 	 */
-	private class EjbRefElement extends LookupElement {
-
-		private final String beanName;
-
-		public EjbRefElement(Member member, AnnotatedElement ae, @Nullable PropertyDescriptor pd) {
-			super(member, pd);
-			EJB resource = ae.getAnnotation(EJB.class);
-			String resourceBeanName = resource.beanName();
-			String resourceName = resource.name();
-			this.isDefaultName = !StringUtils.hasLength(resourceName);
-			if (this.isDefaultName) {
-				resourceName = this.member.getName();
-				if (this.member instanceof Method && resourceName.startsWith("set") && resourceName.length() > 3) {
-					resourceName = Introspector.decapitalize(resourceName.substring(3));
-				}
-			}
-			Class<?> resourceType = resource.beanInterface();
-			if (Object.class != resourceType) {
-				checkResourceType(resourceType);
-			}
-			else {
-				// No resource type specified... check field/method.
-				resourceType = getResourceType();
-			}
-			this.beanName = resourceBeanName;
-			this.name = resourceName;
-			this.lookupType = resourceType;
-			this.mappedName = resource.mappedName();
-		}
-
-		@Override
-		protected Object getResourceToInject(Object target, @Nullable String requestingBeanName) {
-			if (StringUtils.hasLength(this.beanName)) {
-				if (beanFactory != null && beanFactory.containsBean(this.beanName)) {
-					// Local match found for explicitly specified local bean name.
-					Object bean = beanFactory.getBean(this.beanName, this.lookupType);
-					if (requestingBeanName != null && beanFactory instanceof ConfigurableBeanFactory) {
-						((ConfigurableBeanFactory) beanFactory).registerDependentBean(this.beanName, requestingBeanName);
-					}
-					return bean;
-				}
-				else if (this.isDefaultName && !StringUtils.hasLength(this.mappedName)) {
-					throw new NoSuchBeanDefinitionException(this.beanName,
-							"Cannot resolve 'beanName' in local BeanFactory. Consider specifying a general 'name' value instead.");
-				}
-			}
-			// JNDI name lookup - may still go to a local BeanFactory.
-			return getResource(this, requestingBeanName);
-		}
-	}
+//	private class EjbRefElement extends LookupElement {
+//
+//		private final String beanName;
+//
+//		public EjbRefElement(Member member, AnnotatedElement ae, @Nullable PropertyDescriptor pd) {
+//			super(member, pd);
+//			EJB resource = ae.getAnnotation(EJB.class);
+//			String resourceBeanName = resource.beanName();
+//			String resourceName = resource.name();
+//			this.isDefaultName = !StringUtils.hasLength(resourceName);
+//			if (this.isDefaultName) {
+//				resourceName = this.member.getName();
+//				if (this.member instanceof Method && resourceName.startsWith("set") && resourceName.length() > 3) {
+//					resourceName = Introspector.decapitalize(resourceName.substring(3));
+//				}
+//			}
+//			Class<?> resourceType = resource.beanInterface();
+//			if (Object.class != resourceType) {
+//				checkResourceType(resourceType);
+//			}
+//			else {
+//				// No resource type specified... check field/method.
+//				resourceType = getResourceType();
+//			}
+//			this.beanName = resourceBeanName;
+//			this.name = resourceName;
+//			this.lookupType = resourceType;
+//			this.mappedName = resource.mappedName();
+//		}
+//
+//		@Override
+//		protected Object getResourceToInject(Object target, @Nullable String requestingBeanName) {
+//			if (StringUtils.hasLength(this.beanName)) {
+//				if (beanFactory != null && beanFactory.containsBean(this.beanName)) {
+//					// Local match found for explicitly specified local bean name.
+//					Object bean = beanFactory.getBean(this.beanName, this.lookupType);
+//					if (requestingBeanName != null && beanFactory instanceof ConfigurableBeanFactory) {
+//						((ConfigurableBeanFactory) beanFactory).registerDependentBean(this.beanName, requestingBeanName);
+//					}
+//					return bean;
+//				}
+//				else if (this.isDefaultName && !StringUtils.hasLength(this.mappedName)) {
+//					throw new NoSuchBeanDefinitionException(this.beanName,
+//							"Cannot resolve 'beanName' in local BeanFactory. Consider specifying a general 'name' value instead.");
+//				}
+//			}
+//			// JNDI name lookup - may still go to a local BeanFactory.
+//			return getResource(this, requestingBeanName);
+//		}
+//	}
 
 
 	/**

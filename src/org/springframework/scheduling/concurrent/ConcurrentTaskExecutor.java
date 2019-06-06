@@ -22,8 +22,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import javax.enterprise.concurrent.ManagedExecutors;
-import javax.enterprise.concurrent.ManagedTask;
+//import javax.enterprise.concurrent.ManagedExecutors;
+//import javax.enterprise.concurrent.ManagedTask;
 
 import org.springframework.core.task.AsyncListenableTaskExecutor;
 import org.springframework.core.task.TaskDecorator;
@@ -168,9 +168,9 @@ public class ConcurrentTaskExecutor implements AsyncListenableTaskExecutor, Sche
 
 
 	private static TaskExecutorAdapter getAdaptedExecutor(Executor concurrentExecutor) {
-		if (managedExecutorServiceClass != null && managedExecutorServiceClass.isInstance(concurrentExecutor)) {
-			return new ManagedTaskExecutorAdapter(concurrentExecutor);
-		}
+//		if (managedExecutorServiceClass != null && managedExecutorServiceClass.isInstance(concurrentExecutor)) {
+//			return new ManagedTaskExecutorAdapter(concurrentExecutor);
+//		}
 		return new TaskExecutorAdapter(concurrentExecutor);
 	}
 
@@ -181,37 +181,37 @@ public class ConcurrentTaskExecutor implements AsyncListenableTaskExecutor, Sche
 	 * {@link SchedulingAwareRunnable} and an identity name based on the task's
 	 * {@code toString()} representation.
 	 */
-	private static class ManagedTaskExecutorAdapter extends TaskExecutorAdapter {
-
-		public ManagedTaskExecutorAdapter(Executor concurrentExecutor) {
-			super(concurrentExecutor);
-		}
-
-		@Override
-		public void execute(Runnable task) {
-			super.execute(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
-		}
-
-		@Override
-		public Future<?> submit(Runnable task) {
-			return super.submit(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
-		}
-
-		@Override
-		public <T> Future<T> submit(Callable<T> task) {
-			return super.submit(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
-		}
-
-		@Override
-		public ListenableFuture<?> submitListenable(Runnable task) {
-			return super.submitListenable(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
-		}
-
-		@Override
-		public <T> ListenableFuture<T> submitListenable(Callable<T> task) {
-			return super.submitListenable(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
-		}
-	}
+//	private static class ManagedTaskExecutorAdapter extends TaskExecutorAdapter {
+//
+//		public ManagedTaskExecutorAdapter(Executor concurrentExecutor) {
+//			super(concurrentExecutor);
+//		}
+//
+//		@Override
+//		public void execute(Runnable task) {
+//			super.execute(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
+//		}
+//
+//		@Override
+//		public Future<?> submit(Runnable task) {
+//			return super.submit(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
+//		}
+//
+//		@Override
+//		public <T> Future<T> submit(Callable<T> task) {
+//			return super.submit(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
+//		}
+//
+//		@Override
+//		public ListenableFuture<?> submitListenable(Runnable task) {
+//			return super.submitListenable(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
+//		}
+//
+//		@Override
+//		public <T> ListenableFuture<T> submitListenable(Callable<T> task) {
+//			return super.submitListenable(ManagedTaskBuilder.buildManagedTask(task, task.toString()));
+//		}
+//	}
 
 
 	/**
@@ -219,27 +219,27 @@ public class ConcurrentTaskExecutor implements AsyncListenableTaskExecutor, Sche
 	 * exposing a long-running hint based on {@link SchedulingAwareRunnable}
 	 * and a given identity name.
 	 */
-	protected static class ManagedTaskBuilder {
-
-		public static Runnable buildManagedTask(Runnable task, String identityName) {
-			Map<String, String> properties;
-			if (task instanceof SchedulingAwareRunnable) {
-				properties = new HashMap<>(4);
-				properties.put(ManagedTask.LONGRUNNING_HINT,
-						Boolean.toString(((SchedulingAwareRunnable) task).isLongLived()));
-			}
-			else {
-				properties = new HashMap<>(2);
-			}
-			properties.put(ManagedTask.IDENTITY_NAME, identityName);
-			return ManagedExecutors.managedTask(task, properties, null);
-		}
-
-		public static <T> Callable<T> buildManagedTask(Callable<T> task, String identityName) {
-			Map<String, String> properties = new HashMap<>(2);
-			properties.put(ManagedTask.IDENTITY_NAME, identityName);
-			return ManagedExecutors.managedTask(task, properties, null);
-		}
-	}
+//	protected static class ManagedTaskBuilder {
+//
+//		public static Runnable buildManagedTask(Runnable task, String identityName) {
+//			Map<String, String> properties;
+//			if (task instanceof SchedulingAwareRunnable) {
+//				properties = new HashMap<>(4);
+//				properties.put(ManagedTask.LONGRUNNING_HINT,
+//						Boolean.toString(((SchedulingAwareRunnable) task).isLongLived()));
+//			}
+//			else {
+//				properties = new HashMap<>(2);
+//			}
+//			properties.put(ManagedTask.IDENTITY_NAME, identityName);
+//			return ManagedExecutors.managedTask(task, properties, null);
+//		}
+//
+//		public static <T> Callable<T> buildManagedTask(Callable<T> task, String identityName) {
+//			Map<String, String> properties = new HashMap<>(2);
+//			properties.put(ManagedTask.IDENTITY_NAME, identityName);
+//			return ManagedExecutors.managedTask(task, properties, null);
+//		}
+//	}
 
 }

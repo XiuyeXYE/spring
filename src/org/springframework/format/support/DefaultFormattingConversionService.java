@@ -19,12 +19,8 @@ package org.springframework.format.support;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatterRegistrar;
-import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberFormatAnnotationFormatterFactory;
-import org.springframework.format.number.money.CurrencyUnitFormatter;
-import org.springframework.format.number.money.Jsr354NumberFormatAnnotationFormatterFactory;
-import org.springframework.format.number.money.MonetaryAmountFormatter;
 import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringValueResolver;
@@ -112,9 +108,9 @@ public class DefaultFormattingConversionService extends FormattingConversionServ
 
 		// Default handling of monetary values
 		if (jsr354Present) {
-			formatterRegistry.addFormatter(new CurrencyUnitFormatter());
-			formatterRegistry.addFormatter(new MonetaryAmountFormatter());
-			formatterRegistry.addFormatterForFieldAnnotation(new Jsr354NumberFormatAnnotationFormatterFactory());
+//			formatterRegistry.addFormatter(new CurrencyUnitFormatter());
+//			formatterRegistry.addFormatter(new MonetaryAmountFormatter());
+//			formatterRegistry.addFormatterForFieldAnnotation(new Jsr354NumberFormatAnnotationFormatterFactory());
 		}
 
 		// Default handling of date-time values
@@ -124,7 +120,7 @@ public class DefaultFormattingConversionService extends FormattingConversionServ
 
 		if (jodaTimePresent) {
 			// handles Joda-specific types as well as Date, Calendar, Long
-			new JodaTimeFormatterRegistrar().registerFormatters(formatterRegistry);
+//			new JodaTimeFormatterRegistrar().registerFormatters(formatterRegistry);
 		}
 		else {
 			// regular DateFormat-based Date, Calendar, Long converters

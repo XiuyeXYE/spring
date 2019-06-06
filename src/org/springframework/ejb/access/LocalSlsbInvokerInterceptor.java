@@ -18,9 +18,9 @@ package org.springframework.ejb.access;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import javax.ejb.CreateException;
-import javax.ejb.EJBLocalHome;
-import javax.ejb.EJBLocalObject;
+//import javax.ejb.CreateException;
+//import javax.ejb.EJBLocalHome;
+//import javax.ejb.EJBLocalObject;
 import javax.naming.NamingException;
 
 import org.aopalliance.intercept.MethodInvocation;
@@ -83,10 +83,7 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 			if (logger.isDebugEnabled()) {
 				logger.debug("Method of local EJB [" + getJndiName() + "] threw exception", targetEx);
 			}
-			if (targetEx instanceof CreateException) {
-				throw new EjbAccessException("Could not create local EJB [" + getJndiName() + "]", targetEx);
-			}
-			else {
+			{
 				throw targetEx;
 			}
 		}
@@ -98,9 +95,9 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 				"] of local EJB [" + getJndiName() + "]", ex);
 		}
 		finally {
-			if (ejb instanceof EJBLocalObject) {
-				releaseSessionBeanInstance((EJBLocalObject) ejb);
-			}
+//			if (ejb instanceof EJBLocalObject) {
+//				releaseSessionBeanInstance((EJBLocalObject) ejb);
+//			}
 		}
 	}
 
@@ -112,11 +109,11 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 		if (this.homeAsComponent) {
 			return null;
 		}
-		if (!(home instanceof EJBLocalHome)) {
-			// An EJB3 Session Bean...
-			this.homeAsComponent = true;
-			return null;
-		}
+//		if (!(home instanceof EJBLocalHome)) {
+//			// An EJB3 Session Bean...
+//			this.homeAsComponent = true;
+//			return null;
+//		}
 		return super.getCreateMethod(home);
 	}
 
@@ -137,9 +134,9 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 	 * @param ejb the EJB instance to release
 	 * @see #removeSessionBeanInstance
 	 */
-	protected void releaseSessionBeanInstance(EJBLocalObject ejb) {
-		removeSessionBeanInstance(ejb);
-	}
+//	protected void releaseSessionBeanInstance(EJBLocalObject ejb) {
+//		removeSessionBeanInstance(ejb);
+//	}
 
 	/**
 	 * Return a new instance of the stateless session bean.
@@ -164,15 +161,15 @@ public class LocalSlsbInvokerInterceptor extends AbstractSlsbInvokerInterceptor 
 	 * @param ejb the EJB instance to remove
 	 * @see javax.ejb.EJBLocalObject#remove()
 	 */
-	protected void removeSessionBeanInstance(@Nullable EJBLocalObject ejb) {
-		if (ejb != null && !this.homeAsComponent) {
-			try {
-				ejb.remove();
-			}
-			catch (Throwable ex) {
-				logger.warn("Could not invoke 'remove' on local EJB proxy", ex);
-			}
-		}
-	}
+//	protected void removeSessionBeanInstance(@Nullable EJBLocalObject ejb) {
+//		if (ejb != null && !this.homeAsComponent) {
+//			try {
+//				ejb.remove();
+//			}
+//			catch (Throwable ex) {
+//				logger.warn("Could not invoke 'remove' on local EJB proxy", ex);
+//			}
+//		}
+//	}
 
 }
