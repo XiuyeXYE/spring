@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.validation.ClockProvider;
 import javax.validation.Configuration;
 import javax.validation.ConstraintValidatorFactory;
 import javax.validation.MessageInterpolator;
@@ -434,6 +436,13 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 		public static MessageInterpolator buildMessageInterpolator(MessageSource messageSource) {
 			return new ResourceBundleMessageInterpolator(new MessageSourceResourceBundleLocator(messageSource));
 		}
+	}
+
+
+	@Override
+	public ClockProvider getClockProvider() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
