@@ -10,7 +10,7 @@ public class XmlContextMain {
 
 	public static void main(String[] args) {
 
-		ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:");
+		ApplicationContext ac = new ClassPathXmlApplicationContext("classpath:spring-context.xml");
 		A a = ac.getBean("a",A.class);
 		XLog.log("a=",a);
 	}
