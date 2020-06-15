@@ -27,6 +27,8 @@
 // THE POSSIBILITY OF SUCH DAMAGE.
 package org.springframework.asm;
 
+import com.xiuye.util.log.XLog;
+
 /**
  * A visitor to visit a Java field. The methods of this class must be called in the following order:
  * ( {@code visitAnnotation} | {@code visitTypeAnnotation} | {@code visitAttribute} )* {@code
@@ -130,4 +132,7 @@ public abstract class FieldVisitor {
       fv.visitEnd();
     }
   }
+  
+  
+  
 }
